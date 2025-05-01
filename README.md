@@ -31,9 +31,11 @@
 ## 🔑 주요 기능
 
 - **회원 관리**
-  - 회원 가입, 로그인
+  - 신규 회원 등록
   - 회원 정보 조회 및 수정
   - 프론트엔드와 연동 완료 (Svelte 연결 진행 중)
+<img width="1244" alt="Image" src="https://github.com/user-attachments/assets/23443673-b9be-4cb0-a78c-fb7eef78715b" /> 
+
 
 - **경매품 관리**
   - 예술 작품 등록, 수정, 삭제
