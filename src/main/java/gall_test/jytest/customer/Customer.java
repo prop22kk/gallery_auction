@@ -1,10 +1,14 @@
 package gall_test.jytest.customer;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.Objects;
 
 public class Customer {
     private Long id;
     private String address;
+
+    @JsonProperty("phone_number")
     private String phone_number;  // 필드명을 'phone_number'로 유지
     private String email;
 
@@ -25,10 +29,13 @@ public class Customer {
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
+
     public String getAddress() { return address; }
     public void setAddress(String address) { this.address = address; }
-    public String getPhone_number() { return phone_number; }  // getter에서 'phone_number' 사용
-    public void setPhone_number(String phone_number) { this.phone_number = phone_number; }  // setter에서 'phone_number' 사용
+
+    public String getPhone_number() { return phone_number; }  // @JsonProperty는 필드에만 있으면 됩니다.
+    public void setPhone_number(String phone_number) { this.phone_number = phone_number; }
+
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }
 

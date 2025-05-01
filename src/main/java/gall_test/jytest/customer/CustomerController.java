@@ -19,7 +19,7 @@ public class CustomerController {
     @PostMapping
     public ResponseEntity<Customer> createCustomer(@RequestBody final CustomerRequest request) {
         Customer customer = new Customer(
-                request.getAddress(), request.getEmail(), request.getCellphone());
+                request.getAddress(), request.getCellphone(), request.getEmail());
         return ResponseEntity.ok(customerService.createCustomer(customer));
     }
     //전체 고객 검색
