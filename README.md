@@ -34,7 +34,14 @@
   - 신규 회원 등록
   - 회원 정보 조회 및 수정
   - 프론트엔드와 연동 완료 (Svelte 연결 진행 중)
-<img width="1244" alt="Image" src="https://github.com/user-attachments/assets/23443673-b9be-4cb0-a78c-fb7eef78715b" /> 
+<img width="772" alt="Image" src="https://github.com/user-attachments/assets/ef7a09f5-18eb-4d17-8add-779bb925cfb5" />
+<img width="1049" alt="Image" src="https://github.com/user-attachments/assets/cf204f13-cf94-4a61-8d1c-0099cf66e332" />
+
+<img width="172" alt="image" src="https://github.com/user-attachments/assets/be8506d2-e640-4ad4-8ba3-d76e832dbc83" />
+
+<img width="179" alt="Image" src="https://github.com/user-attachments/assets/94258e99-8f03-4fa7-9ca7-0919f980fbea" />
+
+
 
 
 - **경매품 관리**
