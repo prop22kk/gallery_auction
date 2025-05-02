@@ -1,6 +1,6 @@
 package gall_test.jytest.customer;
 
-import gall_test.jytest.customer.repository.CustomerRepository;
+import gall_test.jytest.repository.CustomerRepository;
 
 import java.util.List;
 import java.util.Optional;

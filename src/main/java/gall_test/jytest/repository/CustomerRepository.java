@@ -1,4 +1,4 @@
-package gall_test.jytest.customer.repository;
+package gall_test.jytest.repository;
 
 import gall_test.jytest.customer.Customer;
 

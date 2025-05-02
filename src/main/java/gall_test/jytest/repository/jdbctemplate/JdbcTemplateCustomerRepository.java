@@ -1,7 +1,7 @@
-package gall_test.jytest.customer.repository.jdbctemplate;
+package gall_test.jytest.repository.jdbctemplate;
 
 import gall_test.jytest.customer.Customer;
-import gall_test.jytest.customer.repository.CustomerRepository;
+import gall_test.jytest.repository.CustomerRepository;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;

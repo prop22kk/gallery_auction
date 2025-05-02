@@ -1,12 +1,14 @@
-package gall_test.jytest.customer.config;
+package gall_test.jytest.config;
 
 
+import gall_test.jytest.item.ItemService;
+import gall_test.jytest.repository.ItemRepository;
 import gall_test.jytest.customer.CustomerService;
-import gall_test.jytest.customer.repository.CustomerRepository;
-import gall_test.jytest.customer.repository.jdbctemplate.JdbcTemplateCustomerRepository;
+import gall_test.jytest.repository.CustomerRepository;
+import gall_test.jytest.repository.jdbctemplate.JdbcTemplateCustomerRepository;
+import gall_test.jytest.repository.jdbctemplate.JdbcTemplateItemRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
 
 import javax.sql.DataSource;
 
@@ -30,12 +32,15 @@ public class JdbcTemplateConfig {
     }
 
     @Bean
-    public CustomerRepository accountRepository() {
-        return new JdbcTemplateCustomerRepository(dataSource);
+    public ItemRepository itemRepository() {
+        return new JdbcTemplateItemRepository(dataSource);
     }
 
+    // 🔹 ItemService Bean 등록
     @Bean
-    public CustomerService accountService() {
-        return new CustomerService(customerRepository());
+    public ItemService itemService() {
+        return new ItemService(itemRepository());
     }
+
+
 }
