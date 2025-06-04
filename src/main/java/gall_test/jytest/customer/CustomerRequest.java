@@ -2,6 +2,7 @@ package gall_test.jytest.customer;
 
 public class CustomerRequest {
 
+    private Long id;
     private String address;
     private String phone_number;
     private String email;
@@ -15,6 +16,8 @@ public class CustomerRequest {
         this.email = email;
     }
 
+    public Long getId() {return id;}
+
     public String getAddress() {
         return address;
     }
@@ -26,6 +29,8 @@ public class CustomerRequest {
     public String getCellphone() {
         return phone_number;
     }
+
+    public void setId(Long id) {this.id = id;}
 
     public void setAddress(String address) {
         this.address = address;

@@ -1,9 +1,12 @@
 package gall_test.jytest.customer;
 
+import gall_test.jytest.item.Item;
+import gall_test.jytest.item.ItemSearchCondition;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/customerstest")
@@ -35,6 +38,14 @@ public class CustomerController {
         return ResponseEntity.ok(customerService.findCustomerById(id).get()) ;
     }
 
+    @GetMapping("/search")
+    public ResponseEntity<List<Customer>> searchCustomer(CustomerSearchCondition cond) {
+        return ResponseEntity.ok(customerService.search(cond));
+    }
+
+
+
+
     // 고객 정보 수정
     @PatchMapping("/{customer_id}")
     public ResponseEntity<String> updateCustomer(@PathVariable("customer_id") final Long id,
@@ -50,6 +61,9 @@ public class CustomerController {
         customerService.deleteCustomer(id);
         return ResponseEntity.ok("고객 정보 삭제 성공");
     }
+
+
+
 
 
 }

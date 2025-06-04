@@ -13,6 +13,8 @@ public class CustomerService {
         this.customerRepository = customerRepository;
     }
 
+    public List<Customer> search(CustomerSearchCondition cond) {return customerRepository.search(cond);}
+
     Customer createCustomer(final Customer customer) {
         return customerRepository.save(customer);
     }
@@ -33,6 +35,9 @@ public class CustomerService {
     }
 
 
+    public Optional<Customer> findCustomerByEmail(String email) {return customerRepository.findByEmail(email);
+    }
 
+    public Optional<Customer> findCustomerByPhoneNumber(String phone_number) { return customerRepository.findByPhoneNumber(phone_number); }
 
 }
