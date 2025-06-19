@@ -11,7 +11,6 @@ public class ItemRequest {
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     private String imageUrl;  // imageUrl 필드 추가
-    private double currentPrice;
 
     public String getArtist() {
         return artist;
@@ -75,13 +74,5 @@ public class ItemRequest {
 
     public void setImageUrl(String imageUrl) {  // setter 추가
         this.imageUrl = imageUrl;
-    }
-
-    public Double getCurrentPrice() {
-        return currentPrice;
-    }
-
-    public void setCurrentPrice(Double currentPrice) {
-        this.currentPrice = currentPrice;
     }
 }
