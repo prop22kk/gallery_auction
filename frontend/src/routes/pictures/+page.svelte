@@ -3,24 +3,21 @@
     import { page } from '$app/stores';
     import { goto } from '$app/navigation';
   
-    // 홈('/') 페이지는 사이드바 레이아웃을 건너뜁니다
     $: isHome = $page.url.pathname === '/';
   
-    // 경로 이동용 함수
     function goTo(path) {
       goto(path);
     }
   </script>
   
   {#if !isHome}
-    <!-- 상단 로고 띠지 -->
+    
     <header class="header">
       <a href="/">
         <img src="/GA_image.png" alt="Gallery Auction Logo" class="logo" />
       </a>
     </header>
   
-    <!-- 왼쪽 사이드바 + 본문 -->
     <div class="layout">
       <aside class="sidebar">
         <div class="menu-group">
@@ -45,7 +42,6 @@
       </main>
     </div>
   {:else}
-    <!-- 홈 페이지는 그냥 콘텐츠만 -->
     <slot />
   {/if}
   
@@ -55,7 +51,6 @@
       padding: 0;
     }
   
-    /* 상단 띠지 */
     .header {
       display: flex;
       justify-content: center;
@@ -72,13 +67,11 @@
       object-fit: contain;
     }
   
-    /* 레이아웃 그리드 */
     .layout {
       display: flex;
-      min-height: calc(100vh - 90px); /* 헤더 높이(약 90px) 제외 */
+      min-height: calc(100vh - 90px); 
     }
   
-    /* 사이드바 */
     .sidebar {
       width: 220px;
       background-color: rgba(0, 31, 63, 0.85);
@@ -113,7 +106,6 @@
       color: #f0f0f0;
     }
   
-    /* 버튼을 링크처럼 보이게 하기 위한 클래스 */
     .link-button {
       background: none;
       border: none;
@@ -128,7 +120,6 @@
       color: #f0f0f0;
     }
   
-    /* 본문 콘텐츠 영역 */
     .content {
       flex-grow: 1;
       padding: 30px;

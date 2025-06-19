@@ -13,7 +13,7 @@
   let category = '';
   let ownerId: number | null = null;
 
-  let highestBidderId: number | null = null; // 👈 활동 내역에서 계산
+  let highestBidderId: number | null = null; //활동 내역에서 최고 낙찰가 시도한 회원 ID
   let bidAmount = '';
   let memberId = '';
   let message = '';
@@ -29,7 +29,7 @@
       const activities = await res.json();
 
       if (Array.isArray(activities) && activities.length > 0) {
-        // 가장 높은 가격 기준으로 정렬 후 첫 번째 memberId 사용
+        // 가장 높은 가격 기준으로 정렬 후 첫 번째 회원Id 사용
         activities.sort((a, b) => b.price - a.price);
         highestBidderId = activities[0].memberId ?? null;
       }

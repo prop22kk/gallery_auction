@@ -8,7 +8,6 @@
   let phoneInput;
 
   onMount(() => {
-    // 회원 ID 변경 시 자동 정보 불러오기
     memberIdInput.addEventListener("change", async () => {
       const id = memberIdInput.value;
       if (!id) return;
@@ -30,7 +29,6 @@
       }
     });
 
-    // 폼 제출 시 PATCH 요청
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
       const id = memberIdInput.value;

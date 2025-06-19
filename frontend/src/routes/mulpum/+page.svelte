@@ -15,7 +15,6 @@
   let message = '';
   let previewUrl: string | null = null;
 
-  // 현재 시각을 'YYYY-MM-DDTHH:MM' 형식으로 변환
   function getCurrentDateTimeLocal(): string {
     const now = new Date();
     const offset = now.getTimezoneOffset();
@@ -23,8 +22,9 @@
     return localDate.toISOString().slice(0, 16);
   }
 
+  //경매 시작일 = 현재 날짜, 시각으로
   onMount(() => {
-    newItem.auctionStart = getCurrentDateTimeLocal(); // 시작일 고정
+    newItem.auctionStart = getCurrentDateTimeLocal();
   });
 
   function handleImageChange(event: Event) {
@@ -38,7 +38,6 @@
   }
 
   async function addItem() {
-    // 등록 시에도 다시 한 번 현재 시각 고정 (보안적으로 더 안전)
     newItem.auctionStart = getCurrentDateTimeLocal();
 
     const bodyData = {

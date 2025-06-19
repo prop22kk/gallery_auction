@@ -17,7 +17,6 @@
     return new Date(end) <= now;
   }
 
-  // 조각상 리스트 불러오기
   onMount(async () => {
     try {
       const res = await fetch('http://localhost:8080/api/items');

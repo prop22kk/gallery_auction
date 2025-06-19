@@ -5,9 +5,8 @@
   let artworkList = [];
   let ongoingList = [];
   let endedList = [];
-  let activeTab = 'ongoing'; // 초기 탭: 진행 중인 경매
-
-  // 시간 비교 함수
+  let activeTab = 'ongoing'; 
+  
   function isOngoing(start, end) {
     const now = new Date();
     return new Date(start) <= now && now < new Date(end);
@@ -18,7 +17,7 @@
     return new Date(end) <= now;
   }
 
-  // 백엔드에서 미술품 가져오기
+  
   onMount(async () => {
     try {
       const res = await fetch('http://localhost:8080/api/items');

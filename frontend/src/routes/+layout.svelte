@@ -5,16 +5,13 @@
 </script>
 
 {#if !isHome}
-  <!-- 상단 헤더 -->
   <header class="header">
     <a href="/">
       <img src="/GA_image.png" alt="Gallery Auction Logo" class="logo" />
     </a>
   </header>
 
-  <!-- 전체 레이아웃 -->
   <div class="layout">
-    <!-- 고정 사이드바 -->
     <aside class="sidebar-fixed">
       <div class="sidebar">
         <nav>
@@ -48,7 +45,6 @@
       </div>
     </aside>
 
-    <!-- 본문 콘텐츠 -->
     <main class="content">
       <slot />
     </main>
