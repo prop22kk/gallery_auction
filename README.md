@@ -106,9 +106,10 @@ ID 입력 시 특정 회원 정보 조회
 ID 입력 후 삭제 → 목록에서도 제거됨  
 
 ID를 입력하면 삭제 확인 메시지가 팝업에 뜸
+
 삭제 대상 회원 정보와 함께 회원 삭제 성공 여부가 알림으로 뜨게됨
 
-### ID가 존재하지 않으면 회원 정보를 찾을 수 없다는 알림이 뜨게 됨
+ID가 존재하지 않으면 회원 정보를 찾을 수 없다는 알림이 뜨게 됨
 
 ![회원 삭제 전](https://github.com/user-attachments/assets/deb28bd6-1575-456c-aeb3-9f710eea9584)  
 ![회원 삭제 후](https://github.com/user-attachments/assets/73ef65c2-f766-4425-be4f-d6d0cc8fac2f)
