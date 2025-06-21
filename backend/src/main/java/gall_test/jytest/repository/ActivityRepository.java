@@ -8,7 +8,7 @@ import java.util.Optional;
 public interface ActivityRepository {
     Activity save(Activity activity);
     List<Activity> findAll();
-    List<Activity> findByMemberId(Long memberId);
+    List<Activity> findByMemberId(String memberId);
     List<Activity> findByItemId(Long itemId);
     Optional<Activity> findById(Long id);
 

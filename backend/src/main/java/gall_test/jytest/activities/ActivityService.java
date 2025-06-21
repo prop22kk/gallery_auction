@@ -20,7 +20,7 @@ public class ActivityService {
         return activityRepository.findAll();
     }
 
-    public List<Activity> findByMemberId(Long memberId) {
+    public List<Activity> findByMemberId(String memberId) {
         return activityRepository.findByMemberId(memberId);
     }
 

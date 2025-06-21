@@ -28,7 +28,7 @@ public class JdbcTemplateActivityRepository implements ActivityRepository {
 
         jdbcTemplate.update(connection -> {
             PreparedStatement ps = connection.prepareStatement(sql, new String[]{"activity_id"});
-            ps.setLong(1, activity.getMemberId());
+            ps.setString(1, activity.getMemberId());
             ps.setLong(2, activity.getItemId());
             ps.setDouble(3, activity.getPrice());
             return ps;
@@ -46,7 +46,7 @@ public class JdbcTemplateActivityRepository implements ActivityRepository {
     }
 
     @Override
-    public List<Activity> findByMemberId(Long memberId) {
+    public List<Activity> findByMemberId(String memberId) {
         String sql = "SELECT * FROM activities WHERE member_id = ?";
         return jdbcTemplate.query(sql, rowMapper(), memberId);
     }
@@ -60,7 +60,7 @@ public class JdbcTemplateActivityRepository implements ActivityRepository {
     private RowMapper<Activity> rowMapper() {
         return (rs, rowNum) -> new Activity(
                 rs.getLong("activity_id"),
-                rs.getLong("member_id"),
+                rs.getString("member_id"),
                 rs.getLong("item_id"),
                 rs.getDouble("price"),
                 rs.getTimestamp("activity_time")

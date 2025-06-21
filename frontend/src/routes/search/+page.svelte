@@ -32,6 +32,7 @@
   {:else if customer}
     <div class="result-card">
       <p><strong>ID:</strong> {customer.id}</p>
+      <p><strong>닉네임:</strong> {customer.customer_name}</p>
       <p><strong>주소:</strong> {customer.address}</p>
       <p><strong>전화번호:</strong> {customer.phone_number}</p>
       <p><strong>이메일:</strong> {customer.email}</p>

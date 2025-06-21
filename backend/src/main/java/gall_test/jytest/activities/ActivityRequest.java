@@ -1,12 +1,12 @@
 package gall_test.jytest.activities;
 
 public class ActivityRequest {
-    private Long memberId;
+    private String memberId;
     private Long itemId;
     private Double price;
 
-    public Long getMemberId() { return memberId; }
-    public void setMemberId(Long memberId) { this.memberId = memberId; }
+    public String getMemberId() { return memberId; }
+    public void setMemberId(String memberId) { this.memberId = memberId; }
 
     public Long getItemId() { return itemId; }
     public void setItemId(Long itemId) { this.itemId = itemId; }

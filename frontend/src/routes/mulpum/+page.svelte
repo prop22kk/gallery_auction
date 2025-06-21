@@ -8,7 +8,7 @@
     auctionStart: '',
     auctionEnd: '',
     category: '',
-    ownerId: '',
+    ownerName: '',  // 변경됨
     imageUrl: ''
   };
 
@@ -22,7 +22,6 @@
     return localDate.toISOString().slice(0, 16);
   }
 
-  //경매 시작일 = 현재 날짜, 시각으로
   onMount(() => {
     newItem.auctionStart = getCurrentDateTimeLocal();
   });
@@ -47,7 +46,7 @@
       auctionStart: newItem.auctionStart,
       auctionEnd: newItem.auctionEnd,
       category: newItem.category,
-      ownerId: parseInt(newItem.ownerId),
+      ownerId: newItem.ownerName.trim(),  // 변경됨
       imageUrl: newItem.imageUrl.trim()
     };
 
@@ -67,7 +66,7 @@
           auctionStart: getCurrentDateTimeLocal(),
           auctionEnd: '',
           category: '',
-          ownerId: '',
+          ownerName: '',  // 초기화
           imageUrl: ''
         };
         previewUrl = null;
@@ -95,37 +94,32 @@
 
     <div class="form-group">
       <label for="imageUrl">작품 이미지 URL</label>
-      <input
-        type="text"
-        id="imageUrl"
-        bind:value={newItem.imageUrl}
-        placeholder="예: /images/art1.jpg"
-      />
+      <input id="imageUrl" bind:value={newItem.imageUrl} placeholder="예: /images/art1.jpg" />
     </div>
 
     <div class="form-group">
       <label for="artist">작가명</label>
-      <input type="text" id="artist" bind:value={newItem.artist} placeholder="예: 다빈치" required />
+      <input id="artist" bind:value={newItem.artist} placeholder="예: 다빈치" required />
     </div>
 
     <div class="form-group">
       <label for="itemName">작품 제목</label>
-      <input type="text" id="itemName" bind:value={newItem.itemName} placeholder="예: 모나리자" required />
+      <input id="itemName" bind:value={newItem.itemName} placeholder="예: 모나리자" required />
     </div>
 
     <div class="form-group">
       <label for="startingPrice">시작 가격</label>
-      <input type="number" id="startingPrice" bind:value={newItem.startingPrice} placeholder="예: 1000000" required />
+      <input id="startingPrice" type="number" bind:value={newItem.startingPrice} placeholder="예: 1000000" required />
     </div>
 
     <div class="form-group">
       <label for="auctionStart">경매 시작일 (현재 시각)</label>
-      <input type="datetime-local" id="auctionStart" bind:value={newItem.auctionStart} readonly />
+      <input id="auctionStart" type="datetime-local" bind:value={newItem.auctionStart} readonly />
     </div>
 
     <div class="form-group">
       <label for="auctionEnd">경매 종료일</label>
-      <input type="datetime-local" id="auctionEnd" bind:value={newItem.auctionEnd} required />
+      <input id="auctionEnd" type="datetime-local" bind:value={newItem.auctionEnd} required />
     </div>
 
     <div class="form-group">
@@ -138,8 +132,8 @@
     </div>
 
     <div class="form-group">
-      <label for="ownerId">소유자 ID</label>
-      <input type="number" id="ownerId" bind:value={newItem.ownerId} placeholder="예: 1" required />
+      <label for="ownerName">소유자 닉네임</label>
+      <input id="ownerName" bind:value={newItem.ownerName} placeholder="예: artlover01" required />
     </div>
 
     <button type="submit" class="submit-btn">등록하기</button>
@@ -148,6 +142,8 @@
     {/if}
   </form>
 </main>
+
+
 
 <style>
   .register-container {

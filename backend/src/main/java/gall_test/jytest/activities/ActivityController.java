@@ -34,7 +34,7 @@ public class ActivityController {
 
     //조건 검색
     @GetMapping("/member/{memberId}")
-    public ResponseEntity<List<Activity>> getByMember(@PathVariable Long memberId) {
+    public ResponseEntity<List<Activity>> getByMember(@PathVariable String memberId) {
         return ResponseEntity.ok(activityService.findByMemberId(memberId));
     }
 

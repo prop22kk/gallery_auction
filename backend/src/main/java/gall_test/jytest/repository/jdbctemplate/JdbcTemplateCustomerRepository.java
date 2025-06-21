@@ -2,7 +2,6 @@ package gall_test.jytest.repository.jdbctemplate;
 
 import gall_test.jytest.customer.Customer;
 import gall_test.jytest.customer.CustomerSearchCondition;
-import gall_test.jytest.item.Item;
 import gall_test.jytest.repository.CustomerRepository;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -26,13 +25,14 @@ public class JdbcTemplateCustomerRepository implements CustomerRepository {
 
     @Override
     public Customer save(Customer customer) {
-        String sql ="INSERT INTO customer (address, phone_number, email) VALUES (?, ?, ?)";
+        String sql ="INSERT INTO customer (address, phone_number, email, customer_name) VALUES (?, ?, ?, ?)";
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(connection -> {
             PreparedStatement psmt = connection.prepareStatement(sql, new String[]{"customer_id"});
             psmt.setString(1, customer.getAddress());
             psmt.setString(2, customer.getPhone_number());
             psmt.setString(3, customer.getEmail());
+            psmt.setString(4, customer.getCustomer_name());
             return psmt;
         },keyHolder);
         long key = keyHolder.getKey().longValue();
@@ -59,14 +59,15 @@ public Optional<Customer> findById(Long id) {
                 rs.getLong("customer_id"),
                 rs.getString("address"),
                 rs.getString("phone_number"),
-                rs.getString("email")
+                rs.getString("email"),
+                rs.getString("customer_name")
         );
     }
 
     @Override
     public int update(Customer customer) {
-        String sql = "UPDATE customer SET address = ?, email = ?, phone_number = ? WHERE customer_id = ?";
-        return jdbcTemplate.update(sql,customer.getAddress(),customer.getEmail(),customer.getPhone_number(),customer.getId());
+        String sql = "UPDATE customer SET address = ?, email = ?, phone_number = ?, customer_name = ? WHERE customer_id = ?";
+        return jdbcTemplate.update(sql,customer.getAddress(),customer.getEmail(),customer.getPhone_number(),customer.getCustomer_name(),customer.getId());
     }
 
     @Override
@@ -115,6 +116,11 @@ public Optional<Customer> findById(Long id) {
         if (cond.getEmail() != null) {
             sql += " AND email LIKE ?";
             params.add("%" + cond.getEmail() + "%");
+        }
+
+        if (cond.getCustomer_name() != null) {
+            sql += " AND customer_name LIKE ?";
+            params.add("%" + cond.getCustomer_name() + "%");
         }
 
 

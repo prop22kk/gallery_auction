@@ -1,10 +1,8 @@
 <script lang="ts">
   import { page } from '$app/stores';
 
-  // URL에서 작품 제목 가져오기
   let title = decodeURIComponent($page.params.title);
 
-  // 상태 변수
   let bidAmount = '';
   let currentBid = 0;
   let message = '';

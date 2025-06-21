@@ -115,7 +115,7 @@ public class JdbcTemplateItemRepository implements ItemRepository {
             item.setAuctionStart(rs.getTimestamp("auction_start").toLocalDateTime());
             item.setAuctionEnd(rs.getTimestamp("auction_end").toLocalDateTime());
             item.setCategory(rs.getString("category"));
-            item.setOwnerId(rs.getLong("owner_id"));
+            item.setOwnerId(rs.getString("owner_id"));
             item.setCurrentPrice(rs.getDouble("current_price"));
             item.setImageUrl(rs.getString("image_url")); // ✅ 여기 추가
             return item;

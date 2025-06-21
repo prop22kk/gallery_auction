@@ -21,7 +21,7 @@ public class CustomerController {
     @PostMapping
     public ResponseEntity<Customer> createCustomer(@RequestBody final CustomerRequest request) {
         Customer customer = new Customer(
-                request.getAddress(), request.getPhone_number(), request.getEmail());
+                request.getAddress(), request.getPhone_number(), request.getEmail(), request.getCustomer_name());
         return ResponseEntity.ok(customerService.createCustomer(customer));
     }
 
@@ -56,6 +56,7 @@ public class CustomerController {
         updateCustomer.setAddress(request.getAddress());
         updateCustomer.setEmail(request.getEmail());
         updateCustomer.setPhone_number(request.getPhone_number());
+        updateCustomer.setCustomer_name(request.getCustomer_name());
 
         int updatedCount = customerService.updateCustomer(updateCustomer);
         if (updatedCount == 0) {

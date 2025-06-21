@@ -6,6 +6,7 @@
   let addressInput;
   let emailInput;
   let phoneInput;
+  let nameInput;
 
   onMount(() => {
     memberIdInput.addEventListener("change", async () => {
@@ -23,6 +24,7 @@
         addressInput.value = data.address || "";
         emailInput.value = data.email || "";
         phoneInput.value = data.phone_number || "";
+        nameInput.value = data.customer_name || "";
       } catch (err) {
         console.error("조회 중 오류:", err);
         alert("회원 정보 조회 중 오류가 발생했습니다.");
@@ -36,7 +38,8 @@
       const payload = {
         address: addressInput.value,
         email: emailInput.value,
-        phone_number: phoneInput.value
+        phone_number: phoneInput.value,
+        customer_name: nameInput.value
       };
 
       try {
@@ -67,6 +70,11 @@
     <div class="form-group">
       <label for="customerId">회원 ID</label>
       <input type="text" id="customerId" name="customerId" placeholder="회원 ID" required bind:this={memberIdInput} />
+    </div>
+
+    <div class="form-group">
+      <label for="customer_name">닉네임</label>
+      <input type="text" id="customer_name" name="customer_name" placeholder="닉네임" required bind:this={nameInput} />
     </div>
 
     <div class="form-group">
@@ -148,4 +156,4 @@
   .edit-btn:hover {
     background-color: #1a2a3a;
   }
-</style>
+</style> 

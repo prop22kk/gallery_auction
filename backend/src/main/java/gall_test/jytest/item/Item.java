@@ -10,7 +10,7 @@ public class Item {
     private LocalDateTime auctionStart;
     private LocalDateTime auctionEnd;
     private String category;
-    private Long ownerId;
+    private String ownerId;
     private Double currentPrice;
     private String imageUrl; // ✅ 추가됨
 
@@ -71,11 +71,11 @@ public class Item {
         this.category = category;
     }
 
-    public Long getOwnerId() {
+    public String getOwnerId() {
         return ownerId;
     }
 
-    public void setOwnerId(Long ownerId) {
+    public void setOwnerId(String ownerId) {
         this.ownerId = ownerId;
     }
 

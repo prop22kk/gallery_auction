@@ -5,12 +5,14 @@ public class CustomerSearchCondition {
     private String address;
     private String phone_number;
     private String email;
+    private String customer_name;
 
-    public CustomerSearchCondition(Long id, String address, String phone_number, String email) {
+    public CustomerSearchCondition(Long id, String address, String phone_number, String email, String customer_name) {
         this.id = id;
         this.address = address;
         this.phone_number = phone_number;
         this.email = email;
+        this.customer_name = customer_name;
     }
 
     public void setId(Long id) {
@@ -42,5 +44,13 @@ public class CustomerSearchCondition {
     }
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getCustomer_name() {
+        return customer_name;
+    }
+
+    public void setCustomer_name(String customer_name) {
+        this.customer_name = customer_name;
     }
 }

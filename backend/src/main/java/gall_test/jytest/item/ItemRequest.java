@@ -7,10 +7,10 @@ public class ItemRequest {
     private String itemName;
     private double startingPrice;
     private String category;
-    private Long ownerId;
+    private String ownerId;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
-    private String imageUrl;  // imageUrl 필드 추가
+    private String imageUrl;
 
     public String getArtist() {
         return artist;
@@ -44,11 +44,11 @@ public class ItemRequest {
         this.category = category;
     }
 
-    public Long getOwnerId() {
+    public String getOwnerId() {
         return ownerId;
     }
 
-    public void setOwnerId(Long ownerId) {
+    public void setOwnerId(String ownerId) {
         this.ownerId = ownerId;
     }
 

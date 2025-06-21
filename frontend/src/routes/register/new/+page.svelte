@@ -1,5 +1,6 @@
 <script lang="ts">
   let newCustomer = {
+    customer_name: '', // 닉네임 필드 추가
     address: '',
     email: '',
     phone_number: ''
@@ -17,7 +18,12 @@
 
       if (res.ok) {
         message = '✅ 회원이 성공적으로 추가되었습니다!';
-        newCustomer = { address: '', email: '', phone_number: '' };
+        newCustomer = {
+          customer_name: '',
+          address: '',
+          email: '',
+          phone_number: ''
+        };
       } else {
         message = '❌ 회원 추가에 실패했습니다.';
       }
@@ -31,18 +37,45 @@
   <h2>📌 회원 추가</h2>
   <form class="customer-form" on:submit|preventDefault={addCustomer}>
     <div class="form-group">
+      <label for="customer_name">닉네임</label>
+      <input
+        id="customer_name"
+        bind:value={newCustomer.customer_name}
+        placeholder="닉네임을 입력하세요"
+        required
+      />
+    </div>
+
+    <div class="form-group">
       <label for="address">주소</label>
-      <input id="address" bind:value={newCustomer.address} placeholder="주소를 입력하세요" required />
+      <input
+        id="address"
+        bind:value={newCustomer.address}
+        placeholder="주소를 입력하세요"
+        required
+      />
     </div>
 
     <div class="form-group">
       <label for="email">이메일</label>
-      <input id="email" type="email" bind:value={newCustomer.email} placeholder="이메일을 입력하세요" required />
+      <input
+        id="email"
+        type="email"
+        bind:value={newCustomer.email}
+        placeholder="이메일을 입력하세요"
+        required
+      />
     </div>
 
     <div class="form-group">
-      <label for="cellphone">전화번호</label>
-      <input id="cellphone" type="tel" bind:value={newCustomer.phone_number} placeholder="전화번호를 입력하세요" required />
+      <label for="phone_number">전화번호</label>
+      <input
+        id="phone_number"
+        type="tel"
+        bind:value={newCustomer.phone_number}
+        placeholder="전화번호를 입력하세요"
+        required
+      />
     </div>
 
     <button type="submit" class="submit-btn">회원 추가</button>
