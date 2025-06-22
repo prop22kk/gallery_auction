@@ -47,7 +47,7 @@ public class ItemController {
         item.setArtist(request.getArtist());
         item.setItemName(request.getItemName());
         item.setStartingPrice(request.getStartingPrice());
-        item.setCurrentPrice(request.getStartingPrice());
+        item.setCurrentPrice(request.getCurrentPrice());
         item.setAuctionStart(request.getAuctionStart());
         item.setAuctionEnd(request.getAuctionEnd());
         item.setCategory(request.getCategory());

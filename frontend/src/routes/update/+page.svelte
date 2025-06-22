@@ -8,15 +8,33 @@
   let phoneInput;
   let nameInput;
 
+  let originalNickname = '';
+  let message = '';
+
+  // 닉네임 중복 확인 함수
+  async function isDuplicateNickname(nickname, myId) {
+    try {
+      const res = await fetch(`/api/customerstest`);
+      if (!res.ok) return false;
+
+      const customers = await res.json();
+      return customers.some((c) => c.customer_name === nickname && c.id != myId);
+    } catch (err) {
+      console.error("닉네임 중복 확인 오류:", err);
+      return false;
+    }
+  }
+
   onMount(() => {
     memberIdInput.addEventListener("change", async () => {
       const id = memberIdInput.value;
+      message = '';
       if (!id) return;
 
       try {
         const res = await fetch(`/api/customerstest/${id}`);
         if (!res.ok) {
-          alert("해당 회원 정보를 찾을 수 없습니다.");
+          message = "❌ 해당 회원 정보를 찾을 수 없습니다.";
           return;
         }
 
@@ -25,21 +43,38 @@
         emailInput.value = data.email || "";
         phoneInput.value = data.phone_number || "";
         nameInput.value = data.customer_name || "";
+        originalNickname = data.customer_name || "";
       } catch (err) {
         console.error("조회 중 오류:", err);
-        alert("회원 정보 조회 중 오류가 발생했습니다.");
+        message = "❌ 회원 정보 조회 중 오류가 발생했습니다.";
       }
     });
 
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
-      const id = memberIdInput.value;
+      message = '';
+      const id = memberIdInput.value.trim();
+      const newNickname = nameInput.value.trim();
+
+      if (!newNickname) {
+        message = "⚠ 닉네임을 입력해주세요.";
+        return;
+      }
+
+      // 닉네임이 변경되었을 경우 중복 확인
+      if (newNickname !== originalNickname) {
+        const isDuplicate = await isDuplicateNickname(newNickname, id);
+        if (isDuplicate) {
+          message = "❌ 닉네임이 중복되어서 변경이 불가합니다.";
+          return;
+        }
+      }
 
       const payload = {
         address: addressInput.value,
         email: emailInput.value,
         phone_number: phoneInput.value,
-        customer_name: nameInput.value
+        customer_name: newNickname
       };
 
       try {
@@ -52,13 +87,14 @@
         });
 
         if (res.ok) {
-          alert("회원 정보가 성공적으로 수정되었습니다.");
+          message = "✅ 회원 정보가 성공적으로 수정되었습니다.";
+          originalNickname = newNickname; // 새 닉네임 저장
         } else {
-          alert("회원 정보 수정 실패. 서버 오류 또는 잘못된 입력.");
+          message = "❌ 회원 정보 수정 실패. 서버 오류 또는 잘못된 입력.";
         }
       } catch (err) {
         console.error("수정 중 오류:", err);
-        alert("회원 정보 수정 중 오류가 발생했습니다.");
+        message = "⚠ 회원 정보 수정 중 오류가 발생했습니다.";
       }
     });
   });
@@ -94,6 +130,10 @@
 
     <button type="submit" class="edit-btn">정보 수정</button>
   </form>
+
+  {#if message}
+    <p class="message">{message}</p>
+  {/if}
 </main>
 
 <style>
@@ -156,4 +196,11 @@
   .edit-btn:hover {
     background-color: #1a2a3a;
   }
-</style> 
+
+  .message {
+    margin-top: 20px;
+    text-align: center;
+    font-weight: 600;
+    color: #c0392b;
+  }
+</style>

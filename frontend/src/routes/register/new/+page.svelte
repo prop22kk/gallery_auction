@@ -1,6 +1,6 @@
 <script lang="ts">
   let newCustomer = {
-    customer_name: '', // 닉네임 필드 추가
+    customer_name: '', // 닉네임
     address: '',
     email: '',
     phone_number: ''
@@ -8,7 +8,28 @@
 
   let message = '';
 
+  // 닉네임 중복 여부 확인 함수
+  async function isDuplicateNickname(nickname: string): Promise<boolean> {
+    try {
+      const res = await fetch(`http://localhost:8080/api/customerstest`);
+      if (!res.ok) return false;
+
+      const customers = await res.json();
+      return customers.some((c: any) => c.customer_name === nickname);
+    } catch (err) {
+      console.error('❌ 닉네임 중복 확인 중 오류 발생:', err);
+      return false;
+    }
+  }
+
+  // 회원 추가 함수
   async function addCustomer() {
+    const isDuplicate = await isDuplicateNickname(newCustomer.customer_name);
+    if (isDuplicate) {
+      message = '⚠ 이미 존재하는 닉네임입니다. 다른 닉네임을 입력하세요.';
+      return;
+    }
+
     try {
       const res = await fetch('http://localhost:8080/api/customerstest', {
         method: 'POST',
@@ -28,6 +49,7 @@
         message = '❌ 회원 추가에 실패했습니다.';
       }
     } catch (err) {
+      console.error(err);
       message = '⚠️ 서버 오류가 발생했습니다.';
     }
   }
@@ -151,6 +173,6 @@
     margin-top: 20px;
     text-align: center;
     font-weight: 600;
-    color: #2c3e50;
+    color: #e74c3c;
   }
 </style>

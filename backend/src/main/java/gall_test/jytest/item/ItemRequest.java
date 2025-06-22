@@ -8,6 +8,7 @@ public class ItemRequest {
     private double startingPrice;
     private String category;
     private String ownerId;
+    private double currentPrice;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     private String imageUrl;
@@ -74,5 +75,13 @@ public class ItemRequest {
 
     public void setImageUrl(String imageUrl) {  // setter 추가
         this.imageUrl = imageUrl;
+    }
+
+    public Double getCurrentPrice() {
+        return currentPrice;
+    }
+
+    public void setCurrentPrice(Double currentPrice) {
+        this.currentPrice = currentPrice;
     }
 }

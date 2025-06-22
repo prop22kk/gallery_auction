@@ -3,7 +3,7 @@
   import { onMount } from 'svelte';
 
   let title = '';
-  let itemId: number | null = null;
+  let item_id: number | null = null;
   let artist = '';
   let imageUrl = '';
   let auctionStart = '';
@@ -11,138 +11,148 @@
   let startingPrice = 0;
   let currentBid = 0;
   let category = '';
-  let ownerName: string | null = null;
+  let ownerId: string | null = null;
 
-  let highestBidderName: string | null = null;
+  let highestBidderId: string | null = null;
   let bidAmount = '';
-  let memberName = '';
+  let memberId = '';
   let message = '';
   let auctionClosed = false;
 
   $: title = decodeURIComponent($page.params.title);
 
-  async function fetchHighestBidder(itemId: number) {
+  async function fetchItem() {
+    const res = await fetch(`http://localhost:8080/api/items?itemName=${encodeURIComponent(title)}`);
+    const data = await res.json();
+    const item = Array.isArray(data) ? data.find(i => i.itemName === title) : data;
+    if (!item) {
+      message = '❌ 해당 작품이 존재하지 않습니다.';
+      return;
+    }
+
+    item_id = item.itemId;
+    artist = item.artist;
+    imageUrl = item.imageUrl;
+    auctionStart = item.auctionStart;
+    auctionEnd = item.auctionEnd;
+    startingPrice = Number(item.startingPrice);
+    currentBid = item.currentPrice ? Number(item.currentPrice) : 0;
+    category = item.category ?? '';
+    ownerId = item.ownerId ?? null;
+
+    auctionClosed = new Date(auctionEnd) < new Date();
+  }
+
+  async function fetchHighestBidder() {
+    if (!item_id) return;
+
     try {
-      const res = await fetch(`http://localhost:8080/api/activities?itemId=${itemId}&t=${Date.now()}`);
+      const res = await fetch(`http://localhost:8080/api/activities/item/${item_id}`);
       const activities = await res.json();
 
       if (Array.isArray(activities) && activities.length > 0) {
-        activities.sort((a, b) => b.price - a.price);
-        highestBidderName = activities[0].memberId ?? null;
+        activities.sort((a, b) => Number(b.price) - Number(a.price));
+        currentBid = Number(activities[0].price);
+        highestBidderId = activities[0].memberId ?? null;
+      } else {
+        currentBid = 0;
+        highestBidderId = null;
+        message = '❌ 해당 물품에 대한 입찰 내역이 없습니다.';
       }
-    } catch (err) {
-      console.error('❌ 활동 내역 조회 실패:', err);
-    }
-  }
-
-  async function refreshItem() {
-    if (!title) return;
-    try {
-      const res = await fetch(`http://localhost:8080/api/items?itemName=${encodeURIComponent(title)}&t=${Date.now()}`);
-      const data = await res.json();
-      const item = Array.isArray(data) ? data.find(i => i.itemName === title) : data;
-      if (!item) {
-        message = '❌ 해당 작품이 존재하지 않습니다.';
-        return;
-      }
-
-      itemId = item.itemId;
-      artist = item.artist;
-      imageUrl = `${item.imageUrl}`;
-      auctionStart = item.auctionStart;
-      auctionEnd = item.auctionEnd;
-      startingPrice = item.startingPrice;
-      currentBid = (item.currentPrice !== null && item.currentPrice !== undefined && !isNaN(item.currentPrice))
-        ? item.currentPrice
-        : startingPrice;
-      category = item.category ?? '';
-      ownerName = item.ownerId ?? null;
-      auctionClosed = new Date(auctionEnd) < new Date();
-
-      if (itemId !== null) await fetchHighestBidder(itemId);
     } catch (err) {
       console.error(err);
-      message = '❌ 작품 정보를 불러오는 중 오류가 발생했습니다.';
+      message = '⚠ 입찰 내역을 가져오는 중 오류가 발생했습니다.';
     }
   }
 
-  onMount(() => {
-    refreshItem();
+  onMount(async () => {
+    await fetchItem();
+    if (item_id !== null) await fetchHighestBidder();
   });
 
   async function submitBid() {
     message = '';
     const bid = parseInt(bidAmount);
-    const member = memberName.trim();
+    const member = memberId.trim();
 
     if (!bidAmount || isNaN(bid) || bid <= 0) {
       message = '⚠ 유효한 입찰 금액을 입력하세요.';
       return;
     }
+
     if (!member) {
       message = '⚠ 유효한 회원 닉네임을 입력하세요.';
       return;
     }
-    if (member === ownerName) {
+
+    if (member === ownerId) {
       message = '⚠ 판매자는 자신의 물품에 입찰할 수 없습니다.';
       return;
     }
-    if (member === highestBidderName) {
+
+    if (member === highestBidderId) {
       message = '⚠ 현재 최고 입찰자는 연속으로 입찰할 수 없습니다.';
       return;
     }
-    if (bid < startingPrice) {
-      message = `⚠ 입찰가는 시작가 ₩${startingPrice.toLocaleString()}보다 높아야 합니다.`;
-      return;
-    }
+
     if (bid <= currentBid) {
       message = `⚠ 현재 입찰가 ₩${currentBid.toLocaleString()}보다 높은 금액을 입력하세요.`;
       return;
     }
-    if (itemId === null) {
+
+    if (!item_id) {
       message = '⚠ 유효한 작품 ID가 없습니다.';
       return;
     }
 
-    const updateBody = {
-      artist,
-      itemName: title,
-      startingPrice,
-      currentPrice: bid,
-      auctionStart,
-      auctionEnd,
-      category,
-      ownerId: ownerName,
-      imageUrl
-    };
-
     try {
-      const res = await fetch(`http://localhost:8080/api/items/${itemId}`, {
+      const activityRes = await fetch(`http://localhost:8080/api/activities`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          memberId: member,
+          itemId: item_id,
+          price: bid
+        })
+      });
+
+      if (!activityRes.ok) {
+        const errText = await activityRes.text();
+        message = `❌ 입찰 내역 저장 실패: ${errText}`;
+        return;
+      }
+
+      const newActivity = await activityRes.json();
+      highestBidderId = newActivity.memberId;
+      currentBid = Number(newActivity.price);
+
+      const updateBody = {
+        artist,
+        itemName: title,
+        startingPrice,
+        current_price: currentBid,
+        auctionStart,
+        auctionEnd,
+        category,
+        ownerId,
+        imageUrl
+      };
+
+      const res = await fetch(`http://localhost:8080/api/items/${item_id}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(updateBody)
       });
 
-      if (res.ok) {
-        await refreshItem(); // 서버 최신 데이터 다시 받아오기
-        highestBidderName = member;
-        bidAmount = '';
-        memberName = '';
-        message = `💰 "${title}"에 ₩${bid.toLocaleString()} 입찰 완료!`;
-
-        await fetch(`http://localhost:8080/api/activities`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            memberId: member,
-            itemId: itemId,
-            price: bid
-          })
-        });
-      } else {
+      if (!res.ok) {
         const err = await res.text();
-        message = `❌ 입찰에 실패했습니다: ${err}`;
+        message = `❌ 물품 테이블 갱신 실패: ${err}`;
+        return;
       }
+
+      bidAmount = '';
+      memberId = '';
+      message = `💰 "${title}"에 ₩${currentBid.toLocaleString()} 입찰 완료!`;
     } catch (err) {
       console.error(err);
       message = '⚠️ 입찰 중 서버 오류가 발생했습니다.';
@@ -158,8 +168,8 @@
   <div class="info">
     <p>🔹 시작 가격: ₩{startingPrice.toLocaleString()}</p>
     <p>🔹 경매 기간: {new Date(auctionStart).toLocaleString()} ~ {new Date(auctionEnd).toLocaleString()}</p>
-    <p>🔹 판매자 닉네임: {ownerName ?? '정보 없음'}</p>
-    <p>🔹 현재 최고 입찰자 닉네임: {highestBidderName ?? '없음'}</p>
+    <p>🔹 판매자 회원 닉네임: {ownerId ?? '정보 없음'}</p>
+    <p>🔹 현재 최고 입찰자 닉네임: {highestBidderId ?? '없음'}</p>
   </div>
 
   {#if auctionClosed}
@@ -168,11 +178,11 @@
     </p>
   {:else}
     <div class="bid-form">
-      <label for="memberName">회원 닉네임 (입찰자)</label>
+      <label for="memberId">회원 닉네임 (입찰자)</label>
       <input
-        id="memberName"
+        id="memberId"
         type="text"
-        bind:value={memberName}
+        bind:value={memberId}
         placeholder="예: kimji01"
       />
 
@@ -196,7 +206,6 @@
 </main>
 
 <style>
-  /* 스타일은 동일 */
   .bid-container {
     max-width: 600px;
     margin: 40px auto;
@@ -254,7 +263,7 @@
   .message {
     margin-top: 20px;
     font-weight: 600;
-    color: #27ae60;
+    color: #e74c3c;
   }
   .final-price {
     margin-top: 30px;
